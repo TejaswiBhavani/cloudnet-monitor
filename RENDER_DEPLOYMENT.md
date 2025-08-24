@@ -8,6 +8,24 @@ This guide will help you deploy the CloudNet Monitor application to Render.com.
 2. **InfluxDB Cloud Account**: Sign up at [cloud.influxdata.com](https://cloud.influxdata.com) for time-series metrics storage
 3. **GitHub Repository**: Fork or have access to this repository
 
+## 🆓 Free Tier Deployment
+
+This CloudNet Monitor deployment is **completely configured for Render's free tier**:
+
+- **Backend Service**: Uses Render's free web service plan
+- **Database**: PostgreSQL free tier (1GB storage)
+- **Frontend**: Static site hosting (free with 100GB bandwidth)
+- **InfluxDB**: InfluxDB Cloud free tier (30-day retention)
+
+**Total Monthly Cost**: $0 🎉
+
+### Free Tier Limitations
+- Services sleep after 15 minutes of inactivity (cold starts may take 30+ seconds)
+- 750 hours of uptime per month per service
+- Limited CPU and memory resources
+- PostgreSQL: 1GB storage limit
+- InfluxDB Cloud: 30-day data retention on free tier
+
 ## Quick Deploy with Render Blueprint
 
 ### Option 1: One-Click Deploy (Recommended)
@@ -145,10 +163,12 @@ The following environment variables are automatically configured:
 - 750 hours of uptime per month
 - Limited memory and CPU
 
-### Upgrading for Production
-1. Upgrade to paid plans for always-on services
-2. Consider scaling database instances
-3. Enable auto-scaling for backend service
+### Upgrading from Free Tier
+**Consider upgrading when you need:**
+1. **Always-on services** (no cold starts) - Upgrade to Starter plan ($7/month per service)
+2. **More database storage** - Upgrade PostgreSQL to Starter plan ($7/month for 10GB)
+3. **Higher resource limits** - More CPU/memory for intensive monitoring
+4. **Longer data retention** - InfluxDB Cloud paid plans for extended historical data
 
 ## Troubleshooting
 

@@ -45,14 +45,19 @@ The system follows a modular, multi-layered architecture:
 
 ### 🚀 Deploy to Render (Recommended)
 
-The fastest way to get CloudNet Monitor running in production:
+The fastest way to get CloudNet Monitor running in production **completely FREE**:
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TejaswiBhavani/cloudnet-monitor)
 
+**✨ 100% Free Deployment**:
+- Render free tier (backend + database + frontend)
+- InfluxDB Cloud free tier (metrics storage)
+- **Total cost: $0/month** 🎉
+
 **Prerequisites**: 
 - GitHub account
-- Render account (free tier available)
-- InfluxDB Cloud account (free tier available)
+- Render account (free tier)
+- InfluxDB Cloud account (free tier)
 
 **Steps**:
 1. Click the deploy button above

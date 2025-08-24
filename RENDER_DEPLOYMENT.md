@@ -80,11 +80,6 @@ Your Render deployment will include:
 - **Purpose**: Metadata and configuration storage
 - **Auto-configured**: Connection details automatically injected
 
-### Redis Cache
-- **Type**: Managed Redis (Free tier)
-- **Purpose**: Session storage and caching
-- **Auto-configured**: Connection details automatically injected
-
 ## Configuration
 
 ### Environment Variables
@@ -152,7 +147,7 @@ The following environment variables are automatically configured:
 
 ### Upgrading for Production
 1. Upgrade to paid plans for always-on services
-2. Consider scaling database and Redis instances
+2. Consider scaling database instances
 3. Enable auto-scaling for backend service
 
 ## Troubleshooting
@@ -190,7 +185,6 @@ The following environment variables are automatically configured:
 
 ### Free Tier Usage
 - PostgreSQL: 1GB storage
-- Redis: 25MB memory
 - Web Services: 750 hours/month
 - Static Sites: 100GB bandwidth
 

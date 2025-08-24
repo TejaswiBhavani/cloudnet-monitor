@@ -1,3 +1,21 @@
+// Add enhanced error handling at the very top for deployment debugging
+process.on('uncaughtException', (error) => {
+  console.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.error('Error name:', error.name);
+  console.error('Error message:', error.message);
+  console.error('Error stack:', error.stack);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('UNHANDLED REJECTION! 💥 Shutting down...');
+  console.error('Reason:', reason);
+  console.error('Promise:', promise);
+  process.exit(1);
+});
+
+console.log('Starting CloudNet Monitor backend...');
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -10,7 +28,7 @@ const path = require('path');
 // Import configuration and utilities
 require('dotenv').config();
 const logger = require('./utils/logger');
-const errorHandler = require('./middleware/errorHandler');
+const { errorHandler } = require('./middleware/errorHandler');
 const { authenticateToken } = require('./middleware/auth');
 
 // Import routes
@@ -85,6 +103,19 @@ class NetworkMonitoringApp {
   }
 
   setupRoutes() {
+    // Simple test route for environment validation
+    this.app.get('/test', (req, res) => {
+      res.json({ 
+        status: 'OK', 
+        timestamp: new Date().toISOString(),
+        env: {
+          influx: !!process.env.INFLUX_HOST,
+          postgres: !!process.env.POSTGRES_HOST,
+          node_env: process.env.NODE_ENV
+        }
+      });
+    });
+
     // Health check endpoint
     this.app.get('/health', (req, res) => {
       res.json({
@@ -109,6 +140,7 @@ class NetworkMonitoringApp {
         version: '1.0.0',
         description: 'Network Monitoring Dashboard API',
         endpoints: {
+          '/test': 'Environment test endpoint',
           '/health': 'Health check',
           '/api/auth': 'Authentication endpoints',
           '/api/devices': 'Device management',
@@ -155,9 +187,31 @@ class NetworkMonitoringApp {
 
   async start() {
     try {
-      // Initialize services
-      await this.metricsService.initialize();
-      await this.snmpService.initialize();
+      // Debug logging for environment variables
+      console.log('Environment check:');
+      console.log('INFLUX_HOST:', process.env.INFLUX_HOST ? 'Set' : 'Missing');
+      console.log('POSTGRES_HOST:', process.env.POSTGRES_HOST ? 'Set' : 'Missing');
+      console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'Missing');
+      console.log('Database config:', {
+        host: process.env.POSTGRES_HOST,
+        port: process.env.POSTGRES_PORT,
+        database: process.env.POSTGRES_DB
+      });
+
+      // Initialize services with error handling
+      try {
+        await this.metricsService.initialize();
+      } catch (error) {
+        logger.warn('MetricsService initialization failed, running in limited mode:', error.message);
+        console.log('⚠️  MetricsService failed to initialize - running in limited mode');
+      }
+      
+      try {
+        await this.snmpService.initialize();
+      } catch (error) {
+        logger.warn('SNMPService initialization failed, running in limited mode:', error.message);
+        console.log('⚠️  SNMPService failed to initialize - running in limited mode');
+      }
       
       // Make services available to routes
       this.app.locals.metricsService = this.metricsService;

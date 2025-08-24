@@ -376,7 +376,7 @@ const DashboardPage: React.FC = () => {
                 System Status
               </Typography>
               
-              <Box space={2}>
+              <Box sx={{ '& > *': { mb: 2 } }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" py={1}>
                   <Box display="flex" alignItems="center" gap={2}>
                     <SecurityIcon color="success" />

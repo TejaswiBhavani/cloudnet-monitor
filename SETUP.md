@@ -249,6 +249,20 @@ Create custom alert rules based on:
 
 ## Production Deployment
 
+### Render Deployment (Recommended)
+
+The easiest way to deploy CloudNet Monitor to production:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TejaswiBhavani/cloudnet-monitor)
+
+**Quick Setup**:
+1. Click the deploy button above
+2. Sign up for [InfluxDB Cloud](https://cloud.influxdata.com) (free tier available)
+3. Configure InfluxDB environment variables in Render
+4. Access your deployed application
+
+**Detailed Instructions**: See [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
+
 ### AWS Deployment
 
 The application is designed for AWS deployment:

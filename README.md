@@ -43,6 +43,27 @@ The system follows a modular, multi-layered architecture:
 
 ## Quick Start
 
+### 🚀 Deploy to Render (Recommended)
+
+The fastest way to get CloudNet Monitor running in production:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TejaswiBhavani/cloudnet-monitor)
+
+**Prerequisites**: 
+- GitHub account
+- Render account (free tier available)
+- InfluxDB Cloud account (free tier available)
+
+**Steps**:
+1. Click the deploy button above
+2. Sign up for [InfluxDB Cloud](https://cloud.influxdata.com)
+3. Configure InfluxDB environment variables in Render
+4. Access your deployed application
+
+📖 **Detailed Instructions**: [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
+
+### 🐳 Local Development with Docker
+
 ### Prerequisites
 - Node.js 18+
 - Python 3.9+

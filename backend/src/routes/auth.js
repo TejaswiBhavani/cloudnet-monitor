@@ -18,55 +18,123 @@ router.post('/login', asyncHandler(async (req, res) => {
     throw new ValidationError('Username and password are required');
   }
 
-  // TODO: Implement proper user authentication with database
-  // For demo purposes, using hardcoded credentials
-  const validCredentials = {
-    'admin': '$2b$10$rQZ9FzQyJV5L7yVhRyb7xOGKgE7vKvJvJ7rKvJvJ7rKvJvJ7rKvJv', // password: admin123
-    'operator': '$2b$10$rQZ9FzQyJV5L7yVhRyb7xOGKgE7vKvJvJ7rKvJvJ7rKvJvJ7rKvJv', // password: operator123
-    'viewer': '$2b$10$rQZ9FzQyJV5L7yVhRyb7xOGKgE7vKvJvJ7rKvJvJ7rKvJvJ7rKvJv' // password: viewer123
-  };
-
-  const userRoles = {
-    'admin': 'admin',
-    'operator': 'operator',
-    'viewer': 'viewer'
-  };
-
-  if (!validCredentials[username]) {
-    logger.warn('Login attempt with invalid username', { username, ip: req.ip });
-    throw new ValidationError('Invalid credentials');
-  }
-
-  // For demo purposes, accept any password for now
-  // In production, use: await bcrypt.compare(password, validCredentials[username])
-  const isValidPassword = true;
-
-  if (!isValidPassword) {
-    logger.warn('Login attempt with invalid password', { username, ip: req.ip });
-    throw new ValidationError('Invalid credentials');
-  }
-
-  // Generate JWT token
-  const token = jwt.sign(
-    {
-      userId: username,
-      role: userRoles[username],
-      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
-    },
-    process.env.JWT_SECRET || 'your-secret-key'
-  );
-
-  logger.info('Successful login', { username, role: userRoles[username], ip: req.ip });
-
-  res.json({
-    success: true,
-    message: 'Login successful',
-    token,
-    user: {
-      username,
-      role: userRoles[username]
+  // Get metrics service instance to access database
+  const MetricsService = require('../services/MetricsService');
+  
+  // Get the global metrics service instance from app.js if available
+  let metricsService = req.app.locals.metricsService;
+  
+  if (!metricsService) {
+    // Create a new instance if not available (fallback)
+    metricsService = new MetricsService();
+    
+    try {
+      // Initialize if not already done
+      if (!metricsService.isInitialized) {
+        await metricsService.initialize();
+      }
+    } catch (error) {
+      logger.error('Failed to initialize metrics service for auth:', error);
+      throw error;
     }
-  });
+  }
+
+  try {
+    // Get user from database
+    const userResult = await metricsService.pgPool.query(
+      'SELECT id, username, email, password_hash, role, enabled FROM users WHERE username = $1 AND enabled = true',
+      [username]
+    );
+
+    if (userResult.rows.length === 0) {
+      logger.warn('Login attempt with invalid username', { username, ip: req.ip });
+      throw new ValidationError('Invalid credentials');
+    }
+
+    const user = userResult.rows[0];
+
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+
+    if (!isValidPassword) {
+      logger.warn('Login attempt with invalid password', { username, ip: req.ip });
+      throw new ValidationError('Invalid credentials');
+    }
+
+    // Update last login
+    await metricsService.pgPool.query(
+      'UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = $1',
+      [user.id]
+    );
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        username: user.username,
+        role: user.role,
+        exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60) // 24 hours
+      },
+      process.env.JWT_SECRET || 'your-secret-key'
+    );
+
+    logger.info('Successful login', { username, role: user.role, ip: req.ip });
+
+    res.json({
+      success: true,
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+      }
+    });
+
+  } catch (error) {
+    // Fallback to demo credentials for development
+    if (process.env.NODE_ENV !== 'production') {
+      const validCredentials = {
+        'admin': 'admin123',
+        'operator': 'operator123',
+        'viewer': 'viewer123'
+      };
+
+      const userRoles = {
+        'admin': 'admin',
+        'operator': 'operator',
+        'viewer': 'viewer'
+      };
+
+      if (validCredentials[username] && validCredentials[username] === password) {
+        const token = jwt.sign(
+          {
+            userId: username,
+            username: username,
+            role: userRoles[username],
+            exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
+          },
+          process.env.JWT_SECRET || 'your-secret-key'
+        );
+
+        logger.info('Successful demo login', { username, role: userRoles[username], ip: req.ip });
+
+        return res.json({
+          success: true,
+          message: 'Login successful (demo mode)',
+          token,
+          user: {
+            username,
+            role: userRoles[username]
+          }
+        });
+      }
+    }
+
+    logger.error('Login error:', error);
+    throw new ValidationError('Invalid credentials');
+  }
 }));
 
 // Token refresh endpoint

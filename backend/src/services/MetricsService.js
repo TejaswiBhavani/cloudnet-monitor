@@ -302,7 +302,63 @@ class MetricsService {
       await this.pgPool.query(query);
     }
 
+    // Seed default users if they don't exist
+    await this.seedDefaultUsers();
+
     logger.info('PostgreSQL tables created/verified');
+  }
+
+  /**
+   * Seed default users for demo/production deployment
+   */
+  async seedDefaultUsers() {
+    const bcrypt = require('bcrypt');
+    const saltRounds = parseInt(process.env.BCRYPT_ROUNDS) || 10;
+
+    const defaultUsers = [
+      {
+        username: 'admin',
+        email: 'admin@cloudnet-monitor.local',
+        password: 'admin123',
+        role: 'admin'
+      },
+      {
+        username: 'operator',
+        email: 'operator@cloudnet-monitor.local',
+        password: 'operator123',
+        role: 'operator'
+      },
+      {
+        username: 'viewer',
+        email: 'viewer@cloudnet-monitor.local',
+        password: 'viewer123',
+        role: 'viewer'
+      }
+    ];
+
+    for (const user of defaultUsers) {
+      try {
+        // Check if user already exists
+        const existingUser = await this.pgPool.query(
+          'SELECT id FROM users WHERE username = $1',
+          [user.username]
+        );
+
+        if (existingUser.rows.length === 0) {
+          // Hash password and create user
+          const passwordHash = await bcrypt.hash(user.password, saltRounds);
+          
+          await this.pgPool.query(
+            'INSERT INTO users (username, email, password_hash, role) VALUES ($1, $2, $3, $4)',
+            [user.username, user.email, passwordHash, user.role]
+          );
+          
+          logger.info(`Created default user: ${user.username} (${user.role})`);
+        }
+      } catch (error) {
+        logger.warn(`Failed to create default user ${user.username}:`, error.message);
+      }
+    }
   }
 
   /**

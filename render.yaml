@@ -52,22 +52,28 @@ services:
         value: false
       - key: ENABLE_CLOUD_INTEGRATION
         value: true
-      # InfluxDB Cloud Configuration (user needs to set these)
-      -key: INFLUX_HOST
-        value: # Set this to your InfluxDB Cloud URL
+      # InfluxDB Cloud Configuration (Optional - app works without InfluxDB)
+      # After deployment, update these values in Render Dashboard:
+      # 1. Sign up at https://cloud.influxdata.com
+      # 2. Create an organization and bucket
+      # 3. Generate an API token
+      # 4. Update these environment variables in Render Dashboard
+      - key: INFLUX_HOST
+        value: "" # Example: https://us-west-2-1.aws.cloud2.influxdata.com
       - key: INFLUX_PORT
         value: 443
       - key: INFLUX_TOKEN
-        value: # Set this to your InfluxDB Cloud token
+        value: "" # Your InfluxDB Cloud API token
       - key: INFLUX_ORG
-        value: # Set this to your InfluxDB Cloud organization
+        value: "" # Your InfluxDB Cloud organization ID
       - key: INFLUX_BUCKET
         value: cloudnet_metrics
-      # Frontend Static Site
-      - type: static
-        name: cloudnet-monitor-frontend
-        buildCommand: cd frontend && npm install && npm run build
-        staticPublishPath: frontend/build
+
+  # Frontend Static Site
+  - type: static
+    name: cloudnet-monitor-frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
     envVars:
       - key: REACT_APP_API_URL
         value: https://cloudnet-monitor-backend.onrender.com/api

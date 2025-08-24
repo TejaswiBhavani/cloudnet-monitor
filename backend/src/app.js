@@ -159,6 +159,11 @@ class NetworkMonitoringApp {
       await this.metricsService.initialize();
       await this.snmpService.initialize();
       
+      // Make services available to routes
+      this.app.locals.metricsService = this.metricsService;
+      this.app.locals.snmpService = this.snmpService;
+      this.app.locals.wsService = this.wsService;
+      
       // Start the server
       this.server.listen(this.port, () => {
         logger.info(`CloudNet Monitor API server running on port ${this.port}`);

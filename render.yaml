@@ -4,8 +4,8 @@ services:
     name: cloudnet-monitor-backend
     env: node
     plan: free
-    buildCommand: cd backend && chmod +x build.sh && ./build.sh
-    startCommand: cd backend && npm start
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: npm start
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -54,21 +54,18 @@ services:
         value: true
       # InfluxDB Cloud Configuration (user needs to set these)
       - key: INFLUX_HOST
-        value: # Set this to your InfluxDB Cloud URL
-      - key: INFLUX_PORT
-        value: 443
+        value: us-east-1-1.aws.cloud2.influxdata.com
       - key: INFLUX_TOKEN
-        value: # Set this to your InfluxDB Cloud token
+        value: j58HWgKvsLjjCpz2JciEUdeIaOmxm9zcMf4MomcDkBLbv-JD3VnB2F1dVpBtS2wQWb-sBtCPFjvPUx17-W4fLg==
       - key: INFLUX_ORG
-        value: # Set this to your InfluxDB Cloud organization
+        value: 1cb80d65b3f621cc
       - key: INFLUX_BUCKET
         value: cloudnet_metrics
-
-  # Frontend Static Site
-  - type: static
-    name: cloudnet-monitor-frontend
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/build
+      # Frontend Static Site
+      - type: static
+        name: cloudnet-monitor-frontend
+        buildCommand: cd frontend && npm install && npm run build
+        staticPublishPath: frontend/build
     envVars:
       - key: REACT_APP_API_URL
         value: https://cloudnet-monitor-backend.onrender.com/api

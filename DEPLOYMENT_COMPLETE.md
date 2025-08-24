@@ -75,18 +75,20 @@ INFLUX_BUCKET=cloudnet_metrics
 
 ## 💰 Cost Breakdown
 
-### Free Tier Limits
-- **Render**: 750 hours/month per service
-- **PostgreSQL**: 1GB storage, 7-day backups
-- **InfluxDB Cloud**: 30-day retention, 10K series
+### 🆓 Current Configuration: 100% FREE!
+- **Backend Service**: FREE (Render free tier)
+- **Frontend**: FREE (static site hosting)
+- **PostgreSQL**: FREE (1GB storage, 7-day backups)
+- **InfluxDB Cloud**: FREE (30-day retention, 10K series)
 
-### Estimated Monthly Cost (Paid)
-- **Backend Service**: $7/month (Starter plan)
-- **Frontend**: Free (static sites)
-- **PostgreSQL**: $7/month (Starter)
-- **InfluxDB Cloud**: $0-50/month (usage-based)
+**Total Monthly Cost: $0** 🎉
 
-Total: ~$14-64/month for small to medium deployments
+### Optional Upgrades (if needed)
+- **Backend Service**: $7/month (Starter plan for always-on)
+- **PostgreSQL**: $7/month (Starter plan for 10GB storage)
+- **InfluxDB Cloud**: $0-50/month (usage-based for longer retention)
+
+**Estimated cost if upgraded**: ~$14-64/month for enhanced features
 
 ## 🎯 Next Steps
 

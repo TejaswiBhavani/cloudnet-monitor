@@ -1,0 +1,102 @@
+services:
+  # Backend API Service
+  - type: web
+    name: cloudnet-monitor-backend
+    env: node
+    plan: starter
+    buildCommand: cd backend && chmod +x build.sh && ./build.sh
+    startCommand: cd backend && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: POSTGRES_HOST
+        fromDatabase:
+          name: cloudnet-postgres
+          property: host
+      - key: POSTGRES_PORT
+        fromDatabase:
+          name: cloudnet-postgres
+          property: port
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: cloudnet-postgres
+          property: database
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: cloudnet-postgres
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: cloudnet-postgres
+          property: password
+      - key: REDIS_HOST
+        fromService:
+          type: redis
+          name: cloudnet-redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          type: redis
+          name: cloudnet-redis
+          property: port
+      - key: REDIS_PASSWORD
+        fromService:
+          type: redis
+          name: cloudnet-redis
+          property: password
+      - key: ALLOWED_ORIGINS
+        value: https://cloudnet-monitor-frontend.onrender.com,https://cloudnet-monitor.onrender.com
+      - key: LOG_LEVEL
+        value: info
+      - key: API_RATE_LIMIT
+        value: 100
+      - key: BCRYPT_ROUNDS
+        value: 10
+      - key: ENABLE_WEBSOCKETS
+        value: true
+      - key: ENABLE_FLOW_MONITORING
+        value: true
+      - key: ENABLE_PACKET_CAPTURE
+        value: false
+      - key: ENABLE_CLOUD_INTEGRATION
+        value: true
+      # InfluxDB Cloud Configuration (user needs to set these)
+      - key: INFLUX_HOST
+        value: # Set this to your InfluxDB Cloud URL
+      - key: INFLUX_PORT
+        value: 443
+      - key: INFLUX_TOKEN
+        value: # Set this to your InfluxDB Cloud token
+      - key: INFLUX_ORG
+        value: # Set this to your InfluxDB Cloud organization
+      - key: INFLUX_BUCKET
+        value: cloudnet_metrics
+
+  # Frontend Static Site
+  - type: static
+    name: cloudnet-monitor-frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://cloudnet-monitor-backend.onrender.com/api
+      - key: REACT_APP_WS_URL
+        value: wss://cloudnet-monitor-backend.onrender.com/ws
+
+databases:
+  # PostgreSQL Database for metadata and configuration
+  - name: cloudnet-postgres
+    databaseName: cloudnet_monitor
+    user: postgres
+    plan: free
+
+  # Redis for session storage and caching
+  - name: cloudnet-redis
+    plan: free

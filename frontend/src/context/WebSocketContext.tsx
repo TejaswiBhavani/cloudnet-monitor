@@ -181,7 +181,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     setState(prev => ({
       ...prev,
-      subscriptions: new Set([...prev.subscriptions, ...channels]),
+      subscriptions: new Set([...Array.from(prev.subscriptions), ...channels]),
     }));
   };
 

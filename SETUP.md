@@ -194,7 +194,6 @@ The application includes a complete Docker setup:
 - **docker-compose.yml**: Main orchestration file
 - **PostgreSQL**: Metadata and configuration storage
 - **InfluxDB**: Time-series metrics storage
-- **Redis**: Session and caching layer
 - **Nginx**: Reverse proxy (production)
 
 ## Monitoring Setup

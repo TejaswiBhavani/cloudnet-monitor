@@ -9,7 +9,6 @@ Your CloudNet Monitor application is now fully configured for deployment on Rend
 - **Backend Web Service**: Node.js API with health checks
 - **Frontend Static Site**: React app with optimized production build
 - **PostgreSQL Database**: Managed database for metadata
-- **Redis Cache**: Managed Redis for sessions and caching
 - **InfluxDB Cloud Integration**: Time-series database for metrics
 
 ### 🔧 Technical Improvements
@@ -79,17 +78,15 @@ INFLUX_BUCKET=cloudnet_metrics
 ### Free Tier Limits
 - **Render**: 750 hours/month per service
 - **PostgreSQL**: 1GB storage, 7-day backups
-- **Redis**: 25MB memory
 - **InfluxDB Cloud**: 30-day retention, 10K series
 
 ### Estimated Monthly Cost (Paid)
 - **Backend Service**: $7/month (Starter plan)
 - **Frontend**: Free (static sites)
 - **PostgreSQL**: $7/month (Starter)
-- **Redis**: $3/month (Starter)
 - **InfluxDB Cloud**: $0-50/month (usage-based)
 
-Total: ~$17-67/month for small to medium deployments
+Total: ~$14-64/month for small to medium deployments
 
 ## 🎯 Next Steps
 

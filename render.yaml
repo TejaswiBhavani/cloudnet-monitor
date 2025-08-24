@@ -36,21 +36,6 @@ services:
         fromDatabase:
           name: cloudnet-postgres
           property: password
-      - key: REDIS_HOST
-        fromService:
-          type: redis
-          name: cloudnet-redis
-          property: host
-      - key: REDIS_PORT
-        fromService:
-          type: redis
-          name: cloudnet-redis
-          property: port
-      - key: REDIS_PASSWORD
-        fromService:
-          type: redis
-          name: cloudnet-redis
-          property: password
       - key: ALLOWED_ORIGINS
         value: https://cloudnet-monitor-frontend.onrender.com,https://cloudnet-monitor.onrender.com
       - key: LOG_LEVEL
@@ -95,8 +80,4 @@ databases:
   - name: cloudnet-postgres
     databaseName: cloudnet_monitor
     user: postgres
-    plan: free
-
-  # Redis for session storage and caching
-  - name: cloudnet-redis
     plan: free

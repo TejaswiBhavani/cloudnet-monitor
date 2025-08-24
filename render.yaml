@@ -53,12 +53,14 @@ services:
       - key: ENABLE_CLOUD_INTEGRATION
         value: true
       # InfluxDB Cloud Configuration (user needs to set these)
-      - key: INFLUX_HOST
-        value: us-east-1-1.aws.cloud2.influxdata.com
+      -key: INFLUX_HOST
+        value: # Set this to your InfluxDB Cloud URL
+      - key: INFLUX_PORT
+        value: 443
       - key: INFLUX_TOKEN
-        value: j58HWgKvsLjjCpz2JciEUdeIaOmxm9zcMf4MomcDkBLbv-JD3VnB2F1dVpBtS2wQWb-sBtCPFjvPUx17-W4fLg==
+        value: # Set this to your InfluxDB Cloud token
       - key: INFLUX_ORG
-        value: 1cb80d65b3f621cc
+        value: # Set this to your InfluxDB Cloud organization
       - key: INFLUX_BUCKET
         value: cloudnet_metrics
       # Frontend Static Site

@@ -5,11 +5,11 @@ import {
   Card,
   CardContent,
   Typography,
-  CircularProgress,
   Alert,
   Paper,
   Chip,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import {
   Refresh as RefreshIcon,
@@ -23,10 +23,11 @@ import {
   Timeline as TimelineIcon,
   Security as SecurityIcon,
 } from '@mui/icons-material';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 
 import { useWebSocket } from '../context/WebSocketContext';
 import { DashboardOverview } from '../types';
+import { LoadingSpinner } from '../components/Common';
 
 // Mock data for demonstration
 const mockMetricsData = [
@@ -145,9 +146,10 @@ const DashboardPage: React.FC = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress size={60} />
-      </Box>
+      <LoadingSpinner
+        message="Loading Dashboard Data..."
+        subMessage="Fetching network metrics and device status"
+      />
     );
   }
 
@@ -171,16 +173,36 @@ const DashboardPage: React.FC = () => {
             color={isConnected ? 'success' : 'error'}
             variant="outlined"
           />
-          <IconButton onClick={handleRefresh} color="primary">
-            <RefreshIcon />
-          </IconButton>
+          <Tooltip title="Refresh dashboard data">
+            <IconButton 
+              onClick={handleRefresh} 
+              color="primary"
+              disabled={loading}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Box>
 
       {/* Connection Alert */}
       {!isConnected && (
-        <Alert severity="warning" sx={{ mb: 3 }}>
-          Real-time connection is unavailable. Data may not be current.
+        <Alert 
+          severity="warning" 
+          sx={{ mb: 3 }}
+          action={
+            <Tooltip title="Try to reconnect">
+              <IconButton
+                color="inherit"
+                size="small"
+                onClick={handleRefresh}
+              >
+                <RefreshIcon />
+              </IconButton>
+            </Tooltip>
+          }
+        >
+          Real-time connection is unavailable. Data may not be current. Click refresh to try reconnecting.
         </Alert>
       )}
 
@@ -254,7 +276,7 @@ const DashboardPage: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="time" />
                   <YAxis />
-                  <Tooltip />
+                  <RechartsTooltip />
                   <Line 
                     type="monotone" 
                     dataKey="cpu" 
@@ -305,7 +327,7 @@ const DashboardPage: React.FC = () => {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <RechartsTooltip />
                 </PieChart>
               </ResponsiveContainer>
 
@@ -349,7 +371,7 @@ const DashboardPage: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="severity" />
                   <YAxis />
-                  <Tooltip />
+                  <RechartsTooltip />
                   <Bar dataKey="count" fill="#1976d2" />
                 </BarChart>
               </ResponsiveContainer>

@@ -20,8 +20,10 @@ Your CloudNet Monitor application is now fully configured for deployment on Rend
 
 ### 📚 Documentation
 - **Comprehensive Deployment Guide**: [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
+- **Deployment Status & Verification**: [DEPLOYMENT_STATUS.md](./DEPLOYMENT_STATUS.md)
 - **Updated README**: Quick deploy button and instructions
 - **Verification Script**: `deploy-verify.sh` to test before deployment
+- **Test Script**: `test-deployment.sh` to verify live deployment
 
 ## 🚀 How to Deploy
 
@@ -93,10 +95,13 @@ INFLUX_BUCKET=cloudnet_metrics
 ## 🎯 Next Steps
 
 1. **Deploy the application** using the deploy button
-2. **Configure InfluxDB Cloud** with your credentials
-3. **Update default passwords** for security
-4. **Add your network devices** via the web interface
-5. **Configure monitoring** according to your needs
+2. **Verify deployment** using the test script: `./test-deployment.sh https://your-backend-url.onrender.com`
+3. **Configure InfluxDB Cloud** with your credentials
+4. **Update default passwords** for security
+5. **Add your network devices** via the web interface
+6. **Configure monitoring** according to your needs
+
+📋 **Complete verification guide**: [DEPLOYMENT_STATUS.md](./DEPLOYMENT_STATUS.md)
 
 ## 🆘 Support
 

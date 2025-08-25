@@ -126,6 +126,44 @@ class NetworkMonitoringApp {
       });
     });
 
+    // Deployment status endpoint
+    this.app.get('/deployment-status', (req, res) => {
+      const status = {
+        application: 'CloudNet Monitor',
+        deployment: {
+          status: 'deployed',
+          platform: 'Render',
+          timestamp: new Date().toISOString()
+        },
+        services: {
+          backend: {
+            status: 'healthy',
+            uptime: process.uptime(),
+            database: !!process.env.POSTGRES_HOST ? 'connected' : 'disconnected',
+            influxdb: !!process.env.INFLUX_HOST ? 'configured' : 'not configured'
+          },
+          environment: {
+            node_env: process.env.NODE_ENV || 'development',
+            version: process.env.npm_package_version || '1.0.0'
+          }
+        },
+        links: {
+          health: '/health',
+          api: '/api',
+          documentation: 'https://github.com/TejaswiBhavani/cloudnet-monitor',
+          frontend: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',')[0] : 'not configured'
+        },
+        nextSteps: [
+          'Configure InfluxDB Cloud environment variables',
+          'Access frontend URL and login with default credentials',
+          'Change default passwords for security',
+          'Add network devices via web interface'
+        ]
+      };
+
+      res.json(status);
+    });
+
     // API routes
     this.app.use('/api/auth', authRoutes);
     this.app.use('/api/devices', authenticateToken, deviceRoutes);
@@ -142,6 +180,7 @@ class NetworkMonitoringApp {
         endpoints: {
           '/test': 'Environment test endpoint',
           '/health': 'Health check',
+          '/deployment-status': 'Deployment status and configuration',
           '/api/auth': 'Authentication endpoints',
           '/api/devices': 'Device management',
           '/api/metrics': 'Metrics and monitoring data',

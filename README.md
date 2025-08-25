@@ -2,6 +2,16 @@
 
 A Comprehensive Architectural Blueprint for a Secure, Cloud-Hosted Network Monitoring Dashboard
 
+## 🚀 Quick Deploy (FREE)
+
+**Deploy CloudNet Monitor to production in 2 minutes:**
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TejaswiBhavani/cloudnet-monitor)
+
+**100% FREE**: Render + InfluxDB Cloud free tiers = $0/month 🎉
+
+📋 **After deployment**: [Verify your deployment](./DEPLOYMENT_STATUS.md) | [Test your URLs](./test-deployment.sh)
+
 ## Overview
 
 CloudNet Monitor is a modern network observability platform that provides real-time monitoring and historical analysis of network infrastructure. It supports multi-vendor environments and provides visibility across network hardware, servers, cloud infrastructure, and applications.
@@ -65,7 +75,22 @@ The fastest way to get CloudNet Monitor running in production **completely FREE*
 3. Configure InfluxDB environment variables in Render
 4. Access your deployed application
 
-📖 **Detailed Instructions**: [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
+📖 **Comprehensive Guides**:
+- **Quick Deployment**: [DEPLOYMENT_STATUS.md](./DEPLOYMENT_STATUS.md) - Verification & status checking
+- **Detailed Setup**: [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md) - Complete deployment guide
+- **Configuration**: [SETUP.md](./SETUP.md) - Post-deployment setup
+
+### 🔍 Check Deployment Status
+
+After deploying, verify your application:
+
+1. **Backend Health**: `https://your-backend-url.onrender.com/health`
+2. **Frontend Access**: Open your frontend URL in browser
+3. **API Documentation**: `https://your-backend-url.onrender.com/api`
+
+> **Note**: Render assigns unique URLs to your deployment. Check your Render dashboard for the actual URLs.
+
+📋 **Full Verification Guide**: [DEPLOYMENT_STATUS.md](./DEPLOYMENT_STATUS.md)
 
 ### 🐳 Local Development with Docker
 

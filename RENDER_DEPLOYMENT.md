@@ -76,7 +76,7 @@ Your Render deployment will include:
 
 ### Backend API Service
 - **Type**: Web Service
-- **URL**: `https://cloudnet-monitor-backend.onrender.com`
+- **URL Pattern**: `https://cloudnet-monitor-backend-[random].onrender.com`
 - **Health Check**: `/health`
 - **Features**: 
   - REST API for device management
@@ -86,7 +86,7 @@ Your Render deployment will include:
 
 ### Frontend Application
 - **Type**: Static Site
-- **URL**: `https://cloudnet-monitor-frontend.onrender.com`
+- **URL Pattern**: `https://cloudnet-monitor-frontend-[random].onrender.com`
 - **Features**:
   - React-based dashboard
   - Real-time metrics visualization
@@ -97,6 +97,8 @@ Your Render deployment will include:
 - **Type**: Managed Database (Free tier)
 - **Purpose**: Metadata and configuration storage
 - **Auto-configured**: Connection details automatically injected
+
+> **Important**: Render assigns unique suffixes to service URLs. The URLs in this documentation (cloudnet-monitor-backend.onrender.com) are examples. Your actual URLs will have random suffixes and can be found in your Render dashboard after deployment.
 
 ## Configuration
 
@@ -143,14 +145,53 @@ The following environment variables are automatically configured:
 
 ## Monitoring and Logs
 
+### Post-Deployment Verification
+
+After your deployment completes, follow these steps to verify everything is working:
+
+#### 1. Find Your Deployment URLs
+- Go to [Render Dashboard](https://dashboard.render.com)
+- Click on your services to find their assigned URLs:
+  - Backend: `cloudnet-monitor-backend-[suffix]`
+  - Frontend: `cloudnet-monitor-frontend-[suffix]`
+
+#### 2. Test Backend Health
+```bash
+curl https://your-backend-url.onrender.com/health
+```
+Expected response:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-01T12:00:00.000Z",
+  "uptime": 123.45,
+  "version": "1.0.0"
+}
+```
+
+#### 3. Verify Frontend
+- Open your frontend URL in a browser
+- You should see the CloudNet Monitor login page
+- Try logging in with default credentials (admin/admin123)
+
+#### 4. Check API Endpoints
+Visit `https://your-backend-url.onrender.com/api` for API documentation
+
+#### 5. Test Real-time Features (After InfluxDB Setup)
+- Add a test device in the dashboard
+- Verify WebSocket connection in browser developer tools
+- Check metrics collection
+
 ### Application Logs
 - Go to your service in Render Dashboard
 - Click "Logs" tab to view real-time logs
 - Use filters to search specific log levels
 
 ### Health Checks
-- Backend health: `https://your-backend-url.onrender.com/health`
+- Backend health: `https://your-actual-backend-url.onrender.com/health`
 - Frontend availability: Automatic via Render
+
+> **Finding Your URLs**: After deployment, go to your Render dashboard to find the actual URLs assigned to your services. They will have unique suffixes like `https://cloudnet-monitor-backend-abc123.onrender.com`
 
 ### Metrics
 - Application metrics are stored in InfluxDB Cloud

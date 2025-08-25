@@ -72,8 +72,9 @@ services:
   # Frontend Static Site
   - type: static
     name: cloudnet-monitor-frontend
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/build
+    rootDirectory: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
     envVars:
       - key: REACT_APP_API_URL
         value: https://cloudnet-monitor-backend.onrender.com/api

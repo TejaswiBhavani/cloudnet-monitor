@@ -2,6 +2,7 @@
   "name": "cloudnet-monitor-frontend",
   "version": "1.0.0",
   "description": "Frontend dashboard for CloudNet Monitor - Network Monitoring Dashboard",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
@@ -36,7 +37,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
+    "build": "CI=false GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/",

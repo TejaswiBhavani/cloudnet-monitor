@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Box } from '@mui/material';
 
 // Layout components
 import Layout from './components/Layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import { LoadingSpinner } from './components/Common';
 
 // Page components
 import LoginPage from './pages/LoginPage';
@@ -26,16 +26,11 @@ const App: React.FC = () => {
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-        bgcolor="background.default"
-      >
-        {/* You can replace this with a proper loading spinner component */}
-        <div>Loading...</div>
-      </Box>
+      <LoadingSpinner
+        fullScreen
+        message="Loading CloudNet Monitor..."
+        subMessage="Please wait while we initialize your dashboard"
+      />
     );
   }
 

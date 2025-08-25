@@ -18,28 +18,63 @@ router.post('/login', asyncHandler(async (req, res) => {
     throw new ValidationError('Username and password are required');
   }
 
-  // Get metrics service instance to access database
-  const MetricsService = require('../services/MetricsService');
-  
-  // Get the global metrics service instance from app.js if available
-  let metricsService = req.app.locals.metricsService;
-  
-  if (!metricsService) {
-    // Create a new instance if not available (fallback)
-    metricsService = new MetricsService();
+  // First check for demo credentials in development mode to ensure they always work
+  if (process.env.NODE_ENV !== 'production') {
+    const validCredentials = {
+      'admin': 'admin123',
+      'operator': 'operator123',
+      'viewer': 'viewer123'
+    };
+
+    const userRoles = {
+      'admin': 'admin',
+      'operator': 'operator',
+      'viewer': 'viewer'
+    };
+
+    if (validCredentials[username] && validCredentials[username] === password) {
+      const token = jwt.sign(
+        {
+          userId: username,
+          username: username,
+          role: userRoles[username],
+          exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
+        },
+        process.env.JWT_SECRET || 'your-secret-key'
+      );
+
+      logger.info('Successful demo login', { username, role: userRoles[username], ip: req.ip });
+
+      return res.json({
+        success: true,
+        message: 'Login successful (demo mode)',
+        token,
+        user: {
+          username,
+          role: userRoles[username]
+        }
+      });
+    }
+  }
+
+  // Try database authentication
+  try {
+    // Get metrics service instance to access database
+    const MetricsService = require('../services/MetricsService');
     
-    try {
+    // Get the global metrics service instance from app.js if available
+    let metricsService = req.app.locals.metricsService;
+    
+    if (!metricsService) {
+      // Create a new instance if not available (fallback)
+      metricsService = new MetricsService();
+      
       // Initialize if not already done
       if (!metricsService.isInitialized) {
         await metricsService.initialize();
       }
-    } catch (error) {
-      logger.error('Failed to initialize metrics service for auth:', error);
-      throw error;
     }
-  }
 
-  try {
     // Get user from database
     const userResult = await metricsService.pgPool.query(
       'SELECT id, username, email, password_hash, role, enabled FROM users WHERE username = $1 AND enabled = true',
@@ -93,46 +128,14 @@ router.post('/login', asyncHandler(async (req, res) => {
     });
 
   } catch (error) {
-    // Fallback to demo credentials for development
-    if (process.env.NODE_ENV !== 'production') {
-      const validCredentials = {
-        'admin': 'admin123',
-        'operator': 'operator123',
-        'viewer': 'viewer123'
-      };
-
-      const userRoles = {
-        'admin': 'admin',
-        'operator': 'operator',
-        'viewer': 'viewer'
-      };
-
-      if (validCredentials[username] && validCredentials[username] === password) {
-        const token = jwt.sign(
-          {
-            userId: username,
-            username: username,
-            role: userRoles[username],
-            exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
-          },
-          process.env.JWT_SECRET || 'your-secret-key'
-        );
-
-        logger.info('Successful demo login', { username, role: userRoles[username], ip: req.ip });
-
-        return res.json({
-          success: true,
-          message: 'Login successful (demo mode)',
-          token,
-          user: {
-            username,
-            role: userRoles[username]
-          }
-        });
-      }
+    logger.error('Database login failed:', error);
+    
+    // In production mode, database authentication is required
+    if (process.env.NODE_ENV === 'production') {
+      throw new ValidationError('Authentication service unavailable');
     }
-
-    logger.error('Login error:', error);
+    
+    // In development mode, this means credentials don't match demo or database users
     throw new ValidationError('Invalid credentials');
   }
 }));

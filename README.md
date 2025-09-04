@@ -1,16 +1,67 @@
 # CloudNet Monitor
 
-A Comprehensive Architectural Blueprint for a Secure, Cloud-Hosted Network Monitoring Dashboard
+[![Deploy to Render](https://img.shields.io/badge/deploy-render-blue?style=flat-square&logo=render)](https://render.com/deploy?repo=https://github.com/TejaswiBhavani/cloudnet-monitor)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
+[![GitHub Issues](https://img.shields.io/github/issues/TejaswiBhavani/cloudnet-monitor?style=flat-square)](https://github.com/TejaswiBhavani/cloudnet-monitor/issues)
+[![Documentation](https://img.shields.io/badge/docs-complete-green?style=flat-square)](./README.md)
 
-## 🚀 Quick Deploy (FREE)
+**A Comprehensive Network Monitoring Platform for Modern Infrastructure**
 
-**Deploy CloudNet Monitor to production in 2 minutes:**
+CloudNet Monitor is a modern network observability platform that provides real-time monitoring and historical analysis of network infrastructure. It supports multi-vendor environments and provides visibility across network hardware, servers, cloud infrastructure, and applications.
+
+## 🌐 Live Deployment
+
+**🚀 Deploy Your Own Instance:**
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TejaswiBhavani/cloudnet-monitor)
 
-**100% FREE**: Render + InfluxDB Cloud free tiers = $0/month 🎉
+**After deployment, your URLs will be:**
+- **Frontend Dashboard**: `https://cloudnet-monitor-frontend-[YOUR-ID].onrender.com`
+- **Backend API**: `https://cloudnet-monitor-backend-[YOUR-ID].onrender.com`
+- **Health Check**: `https://cloudnet-monitor-backend-[YOUR-ID].onrender.com/health`
+- **API Documentation**: `https://cloudnet-monitor-backend-[YOUR-ID].onrender.com/api`
 
-📋 **After deployment**: [Verify your deployment](./DEPLOYMENT_STATUS.md) | [Test your URLs](./test-deployment.sh)
+> **🔍 Finding Your URLs**: After deployment, visit your [Render Dashboard](https://dashboard.render.com) to find the exact URLs assigned to your services. Render assigns unique IDs to prevent conflicts.
+
+### Deployment Status Verification
+
+Test your deployment using our verification script:
+```bash
+# Replace with your actual backend URL
+./test-deployment.sh https://cloudnet-monitor-backend-YOUR-ID.onrender.com
+```
+
+**Expected Response** for a healthy deployment:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-01T12:00:00.000Z",
+  "uptime": 123.45,
+  "version": "1.0.0"
+}
+```
+
+### Dynamic Status Badges (After Deployment)
+
+Once you have your deployment URLs, you can use these badge URLs to show real-time status in your own README or documentation:
+
+**Backend Status Badge:**
+```markdown
+[![Backend Status](https://img.shields.io/website?down_color=red&down_message=offline&label=backend&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fyour-backend-url.onrender.com%2Fhealth)](https://your-backend-url.onrender.com/health)
+```
+
+**Frontend Status Badge:**
+```markdown
+[![Frontend Status](https://img.shields.io/website?down_color=red&down_message=offline&label=frontend&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fyour-frontend-url.onrender.com)](https://your-frontend-url.onrender.com)
+```
+
+Just replace `your-backend-url` and `your-frontend-url` with your actual Render URLs.
+
+## 🚀 Quick Deploy (FREE)
+
+**✨ 100% FREE**: Render + InfluxDB Cloud free tiers = $0/month 🎉
+
+📋 **After deployment**: [Complete Verification Guide](./DEPLOYMENT_VERIFICATION.md) | [Quick Test Script](./test-deployment.sh)
 
 ## Overview
 

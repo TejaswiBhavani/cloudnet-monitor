@@ -26,6 +26,7 @@ import {
   AccountTree as TopologyIcon,
   Assessment as ReportsIcon,
   Settings as SettingsIcon,
+  Info as InfoIcon,
   Notifications as NotificationsIcon,
   AccountCircle as AccountIcon,
   Logout as LogoutIcon,
@@ -111,6 +112,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       icon: <SettingsIcon />,
       path: '/settings',
       roles: ['admin', 'operator'],
+    },
+    {
+      id: 'about',
+      label: 'About & Status',
+      icon: <InfoIcon />,
+      path: '/about',
     },
   ];
 

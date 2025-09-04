@@ -37,7 +37,10 @@ services:
           name: cloudnet-postgres
           property: password
       - key: ALLOWED_ORIGINS
-        value: https://cloudnet-monitor-frontend.onrender.com,https://cloudnet-monitor.onrender.com
+        fromService:
+          type: static
+          name: cloudnet-monitor-frontend
+          property: url
       - key: LOG_LEVEL
         value: info
       - key: API_RATE_LIMIT
@@ -77,9 +80,17 @@ services:
     staticPublishPath: ./build
     envVars:
       - key: REACT_APP_API_URL
-        value: https://cloudnet-monitor-backend.onrender.com/api
+        fromService:
+          type: web
+          name: cloudnet-monitor-backend
+          property: url
+          pathSuffix: /api
       - key: REACT_APP_WS_URL
-        value: wss://cloudnet-monitor-backend.onrender.com/ws
+        fromService:
+          type: web
+          name: cloudnet-monitor-backend
+          property: url
+          pathSuffix: /ws
 
 databases:
   # PostgreSQL Database for metadata and configuration

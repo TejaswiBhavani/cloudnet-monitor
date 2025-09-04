@@ -77,12 +77,19 @@ For full functionality, set up InfluxDB Cloud:
 ### Step 5: Access Your Application
 
 1. **Open Frontend URL** in your browser
-2. **Default Login Credentials**:
+2. **Access About Page**: Navigate to `/about` to see live deployment status and all service links
+3. **Default Login Credentials**:
    - Admin: `admin` / `admin123`
    - Operator: `operator` / `operator123` 
    - Viewer: `viewer` / `viewer123`
 
    ⚠️ **Change these immediately after first login!**
+
+4. **Verify Live Services**: The About page provides direct links to:
+   - Backend API health check
+   - API documentation
+   - GitHub repository
+   - Current deployment status
 
 ## 🟢 Success Indicators
 
@@ -92,6 +99,7 @@ Your deployment is successful when:
 - [x] **Frontend Loads**: React app displays without errors
 - [x] **Database Connected**: Login page appears (indicates PostgreSQL working)
 - [x] **API Endpoints**: `/api` endpoint shows API documentation
+- [x] **About Page**: `/about` page shows live deployment status with all working links
 - [x] **WebSocket Ready**: Real-time features work (if InfluxDB configured)
 
 ## 🔴 Troubleshooting

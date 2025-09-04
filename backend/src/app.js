@@ -148,10 +148,12 @@ class NetworkMonitoringApp {
           }
         },
         links: {
-          health: '/health',
-          api: '/api',
+          health: `${req.protocol}://${req.get('host')}/health`,
+          api: `${req.protocol}://${req.get('host')}/api`,
+          backend: `${req.protocol}://${req.get('host')}`,
           documentation: 'https://github.com/TejaswiBhavani/cloudnet-monitor',
-          frontend: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',')[0] : 'not configured'
+          frontend: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',')[0] : 'not configured',
+          renderDeploy: 'https://render.com/deploy?repo=https://github.com/TejaswiBhavani/cloudnet-monitor'
         },
         nextSteps: [
           'Configure InfluxDB Cloud environment variables',

@@ -16,6 +16,7 @@ import AlertsPage from './pages/AlertsPage';
 import TopologyPage from './pages/TopologyPage';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
+import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Context
@@ -71,6 +72,9 @@ const App: React.FC = () => {
                 
                 {/* Settings */}
                 <Route path="/settings" element={<SettingsPage />} />
+                
+                {/* About */}
+                <Route path="/about" element={<AboutPage />} />
                 
                 {/* 404 page */}
                 <Route path="*" element={<NotFoundPage />} />

@@ -89,6 +89,7 @@ if [ -n "$FRONTEND_URL" ]; then
     echo "🎨 Testing Frontend Service"
     echo "------------------------"
     test_url "$FRONTEND_URL" "Frontend Application"
+    test_url "$FRONTEND_URL/about" "About & Status Page"
     test_url "$FRONTEND_URL/static/js" "Frontend Static Assets" 404
 fi
 
@@ -100,8 +101,9 @@ echo ""
 echo "📝 Next Steps:"
 echo "1. If all tests passed, your application is successfully deployed!"
 echo "2. Open the frontend URL in your browser to access the dashboard"
-echo "3. Default login: admin / admin123 (change after first login)"
-echo "4. Configure InfluxDB Cloud for full monitoring capabilities"
+echo "3. Visit /about page to see live deployment status and service links"
+echo "4. Default login: admin / admin123 (change after first login)"
+echo "5. Configure InfluxDB Cloud for full monitoring capabilities"
 echo ""
 echo "📚 Need help?"
 echo "- Deployment Guide: https://github.com/TejaswiBhavani/cloudnet-monitor/blob/main/RENDER_DEPLOYMENT.md"

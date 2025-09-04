@@ -72,6 +72,14 @@ Once verified, add live status badges to your project documentation:
 [![Frontend Status](https://img.shields.io/website?down_color=red&down_message=offline&label=frontend&style=flat-square&up_color=green&up_message=online&url=https%3A%2F%2Fcloudnet-monitor-frontend-YOUR-ID.onrender.com)](https://cloudnet-monitor-frontend-YOUR-ID.onrender.com)
 ```
 
+Replace `YOUR-ID` with your actual Render service IDs. You can also use our test script to generate the exact badge URLs:
+
+```bash
+./test-deployment.sh https://cloudnet-monitor-backend-YOUR-ID.onrender.com https://cloudnet-monitor-frontend-YOUR-ID.onrender.com
+```
+
+The script will output ready-to-copy badge markdown at the end.
+
 ## 🟢 Success Indicators
 
 Your deployment is successful when:

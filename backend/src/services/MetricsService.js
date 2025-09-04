@@ -52,6 +52,17 @@ class MetricsService {
       connectionTimeoutMillis: 2000,
     };
 
+    // Enable SSL for production environments (managed PostgreSQL services require SSL)
+    const isProduction = process.env.NODE_ENV === 'production';
+    const isRemoteHost = process.env.POSTGRES_HOST && process.env.POSTGRES_HOST !== 'localhost';
+    const sslDisabled = process.env.POSTGRES_SSL === 'false';
+    
+    if ((isProduction || isRemoteHost) && !sslDisabled) {
+      pgConfig.ssl = {
+        rejectUnauthorized: false // Allow self-signed certificates for managed services
+      };
+    }
+
     this.pgPool = new Pool(pgConfig);
 
     // Test connection
